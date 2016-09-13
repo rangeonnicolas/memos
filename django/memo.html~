@@ -1,0 +1,19 @@
+<h1>Think of...</h1>
+
+<h2>using <code class='inline'>json.loads()</code> and <code class='inline'>json.dumps()<code> when passing variables to Javascript to a Python view, ans vice-versa<h2>
+
+<h3>When unpacking variables from a http request which are not strings</h3>
+in <code class='inline'>views.py<code>:
+<code><pre>
+def some_view(request):
+	booleanVar = json.loads(request.GET.get("someBooleanVariable", "false"))
+</pre></code>
+
+<h3>When passing to a javascript script (via a template) a value which is neither an int, neither a string</h3>
+in <code class='inline'>views.py<code>:
+<code><pre>
+def some_view(request):
+	[...]
+	javacriptVar = json.dumps(pythonBooleanVar)
+	return render(request, 'template.html', locals())
+</pre></code>

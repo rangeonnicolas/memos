@@ -1,0 +1,6 @@
+<h2>"Raise" a warning:</h2>
+
+<code><pre>
+import warnings
+warnings.warn("Warning Message")
+</pre><code>

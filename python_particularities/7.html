@@ -1,0 +1,29 @@
+<h1>How To:</h1>
+
+
+
+<h2>"Raise" a warning</h2>
+
+<code><pre>
+import warnings
+warnings.warn("Warning Message")
+</pre><code>
+
+<h2>Sort a list of dicts by a given key</h2>
+
+<code><pre>
+newlist = sorted(list_to_be_sorted, key=lambda k: k['key']) 
+</pre><code>
+
+
+<h2>Set a timedelta from a string</h2>
+
+from http://stackoverflow.com/questions/4628122/how-to-construct-a-timedelta-object-from-a-simple-string
+
+<code><pre>
+from datetime import datetime, timedelta
+# we specify the input and the format...
+t = datetime.strptime("05:20:25","%H:%M:%S")
+# ...and use datetime's hour, min and sec properties to build a timedelta
+delta = timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
+</pre></code>

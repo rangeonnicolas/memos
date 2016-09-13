@@ -1,0 +1,72 @@
+Default Parameters Values
+
+http://effbot.org/zone/default-values.htm
+
+Python’s handling of default parameter values is one of a few things that tends to trip up most new Python programmers (but usually only once).
+
+What causes the confusion is the behaviour you get when you use a “mutable” object as a default value; that is, a value that can be modified in place, like a list or a dictionary.
+
+An example:
+
+>>> def function(data=[]):
+...     data.append(1)
+...     return data
+...
+>>> function()
+[1]
+>>> function()
+[1, 1]
+>>> function()
+[1, 1, 1]
+
+As you can see, the list keeps getting longer and longer. If you look at the list identity, you’ll see that the function keeps returning the same object:
+
+>>> id(function())
+12516768
+>>> id(function())
+12516768
+>>> id(function())
+12516768
+
+The reason is simple: the function keeps using the same object, in each call. The modifications we make are “sticky”.
+Why does this happen? #
+
+Default parameter values are always evaluated when, and only when, the “def” statement they belong to is executed; see:
+
+    http://docs.python.org/ref/function.html (dead link)
+
+for the relevant section in the Language Reference.
+
+Also note that “def” is an executable statement in Python, and that default arguments are evaluated in the “def” statement’s environment. If you execute “def” multiple times, it’ll create a new function object (with freshly calculated default values) each time. We’ll see examples of this below.
+What to do instead? #
+
+The workaround is, as others have mentioned, to use a placeholder value instead of modifying the default value. None is a common value:
+
+def myfunc(value=None):
+    if value is None:
+        value = []
+    # modify value here
+
+If you need to handle arbitrary objects (including None), you can use a sentinel object:
+
+sentinel = object()
+
+def myfunc(value=sentinel):
+    if value is sentinel:
+        value = expression
+    # use/modify value here
+
+
+------------------------------------------------------------------
+Conditionnal comprehentions:
+
+[x+1 if x >= 45 else x+5 for x in l]
+
+------------------------------------------------------------------
+Les variables contenues dans une boucle for ne sont pas accessibles en dehors??? (a verifier)
+
+for (a,b) in c:
+	result = a+b
+print(result)
+
+ne fonctionnera pas!

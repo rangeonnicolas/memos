@@ -1,0 +1,70 @@
+
+
+
+<h1>Django Form Validation</h1>
+
+Sources : 
+<ul>
+<li><a href="https://docs.djangoproject.com/fr/1.9/topics/forms/">https://docs.djangoproject.com/fr/1.9/topics/forms/</a>
+<li><a href="https://docs.djangoproject.com/fr/1.9/ref/forms/validation/">https://docs.djangoproject.com/fr/1.9/ref/forms/validation/</a>
+</ul>
+
+
+
+<h2>The "Hello World" of a Django form view</h2>
+
+A Form instance has a <code>is_valid()</code> method, that process all the validation routines for every field. This method:
+<ul>
+<li> Returns <code>True</code> when all the fields contain valid data
+<li> Puts all the form data into the attribute <code>cleaned_data</code>
+</ul> 
+
+<code><pre>
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+
+from .forms import NameForm
+
+def get_name(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NameForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect('/thanks/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = NameForm()
+
+    return render(request, 'name.html', {'form': form})
+</pre></code>
+
+If the form is not valid, <code>form</code> is passed to the template, but this form is not empty anymore: it is filled with the data the user entered. As the form is not valid, the user should modifiate the data.
+
+<h2>Customising the data validation</h2>
+sss
+Here are all the steps of the validation process:
+<ol>
+<li><code>to_python()</code> is called for every field. It transforms the value of the html field into a Python object (or raises a <code>ValidationError</code>)
+<li><code>validate()</code> is called for every field. It validates the data depending on the field.
+<li><code>run_validators()</code> is called for every field. It runs every validator provided for this field and returns the errors into a <code>ValidationError</code> exception.
+<li>The validated data in stored into <code>cleaned_data</code>.
+<li><code><pre>clean_[FIELD_NAME]()</pre></code>, if defined, is called for every fields (where <code><FIELD_NAME></code> is replaced by the attribute name in the form). It cleans the data without considering the concerned field type, taking it into <code>cleaned_data</code>.
+<li><code>clean()</code> is called for the whole form. It can be used to clean fields who depends to each other (ex:"if the field A is populated, then B shall contain a valid mail address")
+</ol>
+
+There are 3 ways to customise the validation, each one having a different purpose:
+<ul>
+<li><a href="https://docs.djangoproject.com/fr/1.9/ref/forms/validation/#using-validators">Writing validators</a>: to validate the field of a form depending on its type (ex: email field, url field, etc.).
+<li><a href="https://docs.djangoproject.com/fr/1.9/ref/forms/validation/#cleaning-a-specific-field-attribute">defining a <code><pre>clean_[FIELD_NAME]()</pre></code></a> method to clean a specifical field
+<li><a href="https://docs.djangoproject.com/fr/1.9/ref/forms/validation/#cleaning-and-validating-fields-that-depend-on-each-other">Overriding the <code>clean()</code></a> method to clean specifical fields that depend on each other
+</ul>
+
+
+
+

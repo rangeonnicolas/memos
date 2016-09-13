@@ -1,0 +1,20 @@
+comprendre la map reduce par group by
+
+particularities:
+.flatmap veut une liste en retour.
+
+
+how to:
+mettre plusieurs fonctions d'aggregation lors d'un reduce: voir bigpeach
+
+
+
+<h2>Pass custom arguments to a function called by <code>RDD.map()</code>, <code>RDD.flatMap()</code>, <code>Stream.map()</code>, <code>Stream.flatMap()</code>, <code>Stream.transform()</code>, etc.</h2>
+
+<code><pre>
+def custom_function(val, cust_arg1, cust_arg2):
+	[...]
+	return [other_val]
+
+rdd.flatMap(lambda x: custom_function(x, cust_arg1, cust_arg2))
+</pre></code>
